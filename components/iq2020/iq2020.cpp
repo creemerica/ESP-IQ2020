@@ -342,10 +342,10 @@ int IQ2020Component::processIQ2020Command() {
 			if ((processingBuffer[6] == 0x01) && (cmdlen == 9)) { // Audio controls
 				if (processingBuffer[7] > 0) { setAudioButton(processingBuffer[7]); }
 				switch (processingBuffer[7]) {
-				case 1: ESP_LOGD(TAG, "AUDIO INFO - PLAY"); break;
-				case 2: ESP_LOGD(TAG, "AUDIO INFO - PAUSE"); break;
-				case 3: ESP_LOGD(TAG, "AUDIO INFO - NEXT"); break;
-				case 4: ESP_LOGD(TAG, "AUDIO INFO - BACK"); break;
+				case 1: ESP_LOGD(TAG, "AUDIO INFO! - PLAY"); break;
+				case 2: ESP_LOGD(TAG, "AUDIO INFO! - PAUSE"); break;
+				case 3: ESP_LOGD(TAG, "AUDIO INFO! - NEXT"); break;
+				case 4: ESP_LOGD(TAG, "AUDIO INFO! - BACK"); break;
 				}
 			}
 			else if ((processingBuffer[6] == 0x03) && (cmdlen == 9)) { // Audio source
@@ -355,15 +355,15 @@ int IQ2020Component::processIQ2020Command() {
 			}
 			else if ((processingBuffer[6] == 0x04) && (cmdlen == 9)) { // Audio power
 				setAudioButton(5);
-				ESP_LOGD(TAG, "AUDIO INFO - ??");
+				ESP_LOGD(TAG, "AUDIO INFO! - ??");
 			}
 			else if ((processingBuffer[6] == 0x02) && (cmdlen == 9)) { // Audio power
 				setAudioButton(6);
-				ESP_LOGD(TAG, "AUDIO INFO - ???");
+				ESP_LOGD(TAG, "AUDIO INFO! - ???");
 			}
 			else if ((processingBuffer[6] == 0x00) && (processingBuffer[7] == 0x01) && (cmdlen == 14)) { // Audio settings
 #ifdef USE_NUMBER
-				ESP_LOGD(TAG, "AUDIO - Volume=%d, Tremble=%d, Bass=%d, Balance=%d, Subwoofer=%d", processingBuffer[8], processingBuffer[9], processingBuffer[10], processingBuffer[11], processingBuffer[12]);
+				ESP_LOGD(TAG, "AUDIO INFO!- Volume=%d, Tremble=%d, Bass=%d, Balance=%d, Subwoofer=%d", processingBuffer[8], processingBuffer[9], processingBuffer[10], processingBuffer[11], processingBuffer[12]);
 				setNumberState(NUMBER_AUDIO_VOLUME, (processingBuffer[8] - 15) << 2);
 				setNumberState(NUMBER_AUDIO_TREMBLE, (signed char)(processingBuffer[9]));
 				setNumberState(NUMBER_AUDIO_BASS, (signed char)(processingBuffer[10]));
