@@ -317,7 +317,7 @@ int IQ2020Component::processIQ2020Command() {
 	unsigned char checksum = 0; // Compute the checksum
 	for (int i = 1; i < (cmdlen - 1); i++) { checksum += processingBuffer[i]; }
 	if (processingBuffer[cmdlen - 1] != (checksum ^ 0xFF)) { ESP_LOGD(TAG, "Invalid checksum. Got 0x%02x, expected 0x%02x.", processingBuffer[cmdlen - 1], (checksum ^ 0xFF)); return nextPossiblePacket(); }
-	//ESP_LOGD(TAG, "IQ2020 data, dst:%02x src:%02x op:%02x datalen:%d", processingBuffer[1], processingBuffer[2], processingBuffer[4], processingBuffer[3]);
+	ESP_LOGD(TAG, "IQ2020 data, dst:%02x src:%02x op:%02x datalen:%d", processingBuffer[1], processingBuffer[2], processingBuffer[4], processingBuffer[3]);
 
 	if ((processingBuffer[1] == 0x01) && (processingBuffer[2] == 0x1F) && (processingBuffer[4] == 0x40)) {
 		// This is a request command from the SPA connection kit, take note of this.
@@ -330,22 +330,22 @@ int IQ2020Component::processIQ2020Command() {
 		}
 		connectionKit = ::millis();
 
-		//ESP_LOGD(TAG, "SCK CMD Data, len=%d, cmd=%02x%02x", cmdlen, processingBuffer[5], processingBuffer[6]);
+		ESP_LOGD(TAG, "SCK CMD Data, len=%d, cmd=%02x%02x", cmdlen, processingBuffer[5], processingBuffer[6]);
 	}
 
 	if ((processingBuffer[1] == 0x33) && (processingBuffer[2] == 0x01) && (processingBuffer[4] == 0x40) && (cmdlen >= 8)) {
 		// This is a command from IQ2020 to the audio module
-		//ESP_LOGD(TAG, "Audio REQ Data, len=%d, cmd=%02x%02x", cmdlen, processingBuffer[5], processingBuffer[6]);
+		ESP_LOGD(TAG, "Audio REQ Data, len=%d, cmd=%02x%02x", cmdlen, processingBuffer[5], processingBuffer[6]);
 
 		int responded = 0;
 		if ((processingBuffer[5] == 0x19) && (cmdlen >= 9)) {
 			if ((processingBuffer[6] == 0x01) && (cmdlen == 9)) { // Audio controls
 				if (processingBuffer[7] > 0) { setAudioButton(processingBuffer[7]); }
 				switch (processingBuffer[7]) {
-				case 1: ESP_LOGD(TAG, "AUDIO INFO! - PLAY"); break;
-				case 2: ESP_LOGD(TAG, "AUDIO INFO! - PAUSE"); break;
-				case 3: ESP_LOGD(TAG, "AUDIO INFO! - NEXT"); break;
-				case 4: ESP_LOGD(TAG, "AUDIO INFO! - BACK"); break;
+				case 1: ESP_LOGD(TAG, "AUDIO INFO - PLAY"); break;
+				case 2: ESP_LOGD(TAG, "AUDIO INFO - PAUSE"); break;
+				case 3: ESP_LOGD(TAG, "AUDIO INFO - NEXT"); break;
+				case 4: ESP_LOGD(TAG, "AUDIO INFO - BACK"); break;
 				}
 			}
 			else if ((processingBuffer[6] == 0x03) && (cmdlen == 9)) { // Audio source
@@ -353,17 +353,9 @@ int IQ2020Component::processIQ2020Command() {
 				setSelectState(SELECT_AUDIO_SOURCE, processingBuffer[7]);
 #endif
 			}
-			else if ((processingBuffer[6] == 0x04) && (cmdlen == 9)) { // Audio power
-				setAudioButton(5);
-				ESP_LOGD(TAG, "AUDIO INFO! - ??");
-			}
-			else if ((processingBuffer[6] == 0x02) && (cmdlen == 9)) { // Audio power
-				setAudioButton(6);
-				ESP_LOGD(TAG, "AUDIO INFO! - ???");
-			}
 			else if ((processingBuffer[6] == 0x00) && (processingBuffer[7] == 0x01) && (cmdlen == 14)) { // Audio settings
 #ifdef USE_NUMBER
-				ESP_LOGD(TAG, "AUDIO INFO!- Volume=%d, Tremble=%d, Bass=%d, Balance=%d, Subwoofer=%d", processingBuffer[8], processingBuffer[9], processingBuffer[10], processingBuffer[11], processingBuffer[12]);
+				ESP_LOGD(TAG, "AUDIO INFO - Volume=%d, Tremble=%d, Bass=%d, Balance=%d, Subwoofer=%d", processingBuffer[8], processingBuffer[9], processingBuffer[10], processingBuffer[11], processingBuffer[12]);
 				setNumberState(NUMBER_AUDIO_VOLUME, (processingBuffer[8] - 15) << 2);
 				setNumberState(NUMBER_AUDIO_TREMBLE, (signed char)(processingBuffer[9]));
 				setNumberState(NUMBER_AUDIO_BASS, (signed char)(processingBuffer[10]));
