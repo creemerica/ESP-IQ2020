@@ -336,6 +336,7 @@ int IQ2020Component::processIQ2020Command() {
 	if ((processingBuffer[1] == 0x33) && (processingBuffer[2] == 0x01) && (processingBuffer[4] == 0x40) && (cmdlen >= 8)) {
 		// This is a command from IQ2020 to the audio module
 		ESP_LOGD(TAG, "Audio REQ Data, len=%d, cmd=%02x%02x", cmdlen, processingBuffer[5], processingBuffer[6]);
+		ESP_LOGD(TAG, "Audio Processing Buffer Data, one=%d, two=%d, three=%d, four=%d, five=%d, six=%d, seven=%d, eight=%d, nine=%d, ten=%d, eleven=%d, twelve=%d,", cmdlen, processingBuffer[5], processingBuffer[6]);
 
 		int responded = 0;
 		if ((processingBuffer[5] == 0x19) && (cmdlen >= 9)) {
@@ -353,14 +354,9 @@ int IQ2020Component::processIQ2020Command() {
 				setSelectState(SELECT_AUDIO_SOURCE, processingBuffer[7]);
 #endif
 			}
-			else if ((processingBuffer[6] == 0x00) && (processingBuffer[7] == 0x00)) { // Audio settings
-#ifdef USE_NUMBER
-				ESP_LOGD(TAG, "AUDIO INFO - Power=%d", processingBuffer[7]);
-#endif
-			}
 			else if ((processingBuffer[6] == 0x00) && (processingBuffer[7] == 0x01) && (cmdlen == 14)) { // Audio settings
 #ifdef USE_NUMBER
-				ESP_LOGD(TAG, "AUDIO INFO - Test1=%d, Test2=%d, Volume=%d, Tremble=%d, Bass=%d, Balance=%d, Subwoofer=%d", processingBuffer[8], processingBuffer[9], processingBuffer[10], processingBuffer[11], processingBuffer[12]);
+				ESP_LOGD(TAG, "AUDIO INFO - Volume=%d, Tremble=%d, Bass=%d, Balance=%d, Subwoofer=%d", processingBuffer[8], processingBuffer[9], processingBuffer[10], processingBuffer[11], processingBuffer[12]);
 				setNumberState(NUMBER_AUDIO_VOLUME, (processingBuffer[8] - 15) << 2);
 				setNumberState(NUMBER_AUDIO_TREMBLE, (signed char)(processingBuffer[9]));
 				setNumberState(NUMBER_AUDIO_BASS, (signed char)(processingBuffer[10]));
