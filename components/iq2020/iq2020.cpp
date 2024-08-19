@@ -353,9 +353,14 @@ int IQ2020Component::processIQ2020Command() {
 				setSelectState(SELECT_AUDIO_SOURCE, processingBuffer[7]);
 #endif
 			}
+			else if ((processingBuffer[6] == 0x00) && (processingBuffer[7] == 0x00)) { // Audio settings
+#ifdef USE_NUMBER
+				ESP_LOGD(TAG, "AUDIO INFO - Power=%d", processingBuffer[7]);
+#endif
+			}
 			else if ((processingBuffer[6] == 0x00) && (processingBuffer[7] == 0x01) && (cmdlen == 14)) { // Audio settings
 #ifdef USE_NUMBER
-				ESP_LOGD(TAG, "AUDIO INFO - Volume=%d, Tremble=%d, Bass=%d, Balance=%d, Subwoofer=%d", processingBuffer[8], processingBuffer[9], processingBuffer[10], processingBuffer[11], processingBuffer[12]);
+				ESP_LOGD(TAG, "AUDIO INFO - Test1=%d, Test2=%d, Volume=%d, Tremble=%d, Bass=%d, Balance=%d, Subwoofer=%d", processingBuffer[8], processingBuffer[9], processingBuffer[10], processingBuffer[11], processingBuffer[12]);
 				setNumberState(NUMBER_AUDIO_VOLUME, (processingBuffer[8] - 15) << 2);
 				setNumberState(NUMBER_AUDIO_TREMBLE, (signed char)(processingBuffer[9]));
 				setNumberState(NUMBER_AUDIO_BASS, (signed char)(processingBuffer[10]));
