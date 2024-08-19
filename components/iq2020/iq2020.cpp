@@ -355,6 +355,11 @@ int IQ2020Component::processIQ2020Command() {
 			}
 			else if ((processingBuffer[6] == 0x04) && (cmdlen == 9)) { // Audio power
 				setAudioButton(5);
+				ESP_LOGD(TAG, "AUDIO INFO - ??");
+			}
+			else if ((processingBuffer[6] == 0x02) && (cmdlen == 9)) { // Audio power
+				setAudioButton(6);
+				ESP_LOGD(TAG, "AUDIO INFO - ???");
 			}
 			else if ((processingBuffer[6] == 0x00) && (processingBuffer[7] == 0x01) && (cmdlen == 14)) { // Audio settings
 #ifdef USE_NUMBER
