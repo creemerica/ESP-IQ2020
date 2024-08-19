@@ -342,10 +342,10 @@ int IQ2020Component::processIQ2020Command() {
 			if ((processingBuffer[6] == 0x01) && (cmdlen == 9)) { // Audio controls
 				if (processingBuffer[7] > 0) { setAudioButton(processingBuffer[7]); }
 				switch (processingBuffer[7]) {
-				case 1: ESP_LOGD(TAG, "AUDIO - PLAY"); break;
-				case 2: ESP_LOGD(TAG, "AUDIO - PAUSE"); break;
-				case 3: ESP_LOGD(TAG, "AUDIO - NEXT"); break;
-				case 4: ESP_LOGD(TAG, "AUDIO - BACK"); break;
+				case 1: ESP_LOGD(TAG, "AUDIO INFO - PLAY"); break;
+				case 2: ESP_LOGD(TAG, "AUDIO INFO - PAUSE"); break;
+				case 3: ESP_LOGD(TAG, "AUDIO INFO - NEXT"); break;
+				case 4: ESP_LOGD(TAG, "AUDIO INFO - BACK"); break;
 				}
 			}
 			else if ((processingBuffer[6] == 0x03) && (cmdlen == 9)) { // Audio source
